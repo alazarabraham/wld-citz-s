@@ -9,6 +9,13 @@ router.get("/getAllCountries", (request, response)=>{
     })
 })
 
+router.get("/getAllCountriesForHome", (request, response)=>{
+    db.query("select * from countries order by name desc", (err, results)=>{
+        if(err) throw err;
+        response.send(results);
+    })
+})
+
 router.get("/getCountry/:id", (request, response)=>{
     db.query("select * from countries where id = ?", [request.params.id], (err, results)=>{
         if(err) throw err;
