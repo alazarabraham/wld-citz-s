@@ -23,7 +23,7 @@ router.get("/getCountry/:id", (request, response)=>{
     })
 })
 router.get("/getAllCountryInfo", (request, response)=>{
-    db.query(`SELECT countries.id, countries.name, countries.flag, countries.banner_img, languages.name AS language,
+    db.query(`SELECT countries.id, countries.name, countries.flag, countries.banner_img, countries.capital, languages.name AS language, languages.id AS language_id, 
     COUNT(distinct books.id) as total_books, COUNT(distinct films.id) as total_films, COUNT(distinct history_topics.id) as total_history_topics
     FROM countries
     INNER JOIN languages ON countries.language_id = languages.id
@@ -74,6 +74,13 @@ router.get("/getAllFilmsByCountryId/:id", (request, response)=>{
     db.query(`select * from films where country_id = ?`, [request.params.id], (err, results)=>{
         if(err) throw err;
         response.send(results);
+    })
+})
+
+router.put("/editCountry", (request, response)=>{
+    db.query("update countries set name = ?, flag = ?, language_id = ?, capital = ?, banner_img = ? where id = ?", [request.body.name, request.body.flag, request.body.language_id, request.body.capital, request.body.banner_img, request.body.id], (err, results)=>{
+        if(err) throw err;
+        response.send("Film successfully updated");
     })
 })
 
