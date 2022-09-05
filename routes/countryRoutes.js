@@ -80,7 +80,7 @@ router.get("/getAllFilmsByCountryId/:id", (request, response)=>{
 router.put("/editCountry", (request, response)=>{
     db.query("update countries set name = ?, flag = ?, language_id = ?, capital = ?, banner_img = ? where id = ?", [request.body.name, request.body.flag, request.body.language_id, request.body.capital, request.body.banner_img, request.body.id], (err, results)=>{
         if(err) throw err;
-        response.send("Film successfully updated");
+        response.send("Country successfully updated");
     })
 })
 

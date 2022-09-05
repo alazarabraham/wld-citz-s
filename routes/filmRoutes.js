@@ -73,11 +73,10 @@ router.post("/addFilm", (request, response)=>{
 })
 
 router.put("/editFilm", (request, response)=>{
-    db.query("insert into films(title, description, release_year, language_id, user_id, country_id, poster) values(?, ? , ?, ?, ?, ?, ?)", [request.body.title, request.body.description, request.body.release_year, request.body.language_id, request.body.user_id, request.body.country_id,request.body.poster], (err, results)=>{
+    db.query("update films set title = ?, description = ?, release_year = ?, language_id = ?, country_id = ?, poster = ? where id = ?", [request.body.title, request.body.description, request.body.release_year, request.body.language_id,  request.body.country_id, request.body.poster, request.body.id], (err, results)=>{
         if(err) throw err;
-        response.send("Film successfully added");
+        response.send("Film successfully updated");
     })
 })
-
 
 module.exports = router;

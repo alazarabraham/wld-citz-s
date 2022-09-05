@@ -18,7 +18,7 @@ router.get("/getBook/:id", (request, response)=>{
 
 router.get("/getAllBookInfo", (request, response)=>{
     db.query(`select books.id, books.title , books.description, books.release_year, books.cover, 
-    languages.name AS language, authors.first_name, authors.last_name,countries.id AS country_id, countries.name AS country_name, 
+    languages.name AS language, languages.id AS language_id, authors.id AS author_id, authors.first_name, authors.last_name, authors.id AS author_id, countries.id AS country_id, countries.name AS country_name, 
     countries.flag, users.id AS userId, users.username, IFNULL(SUM(book_likes.book_like), 0) as total_likes
     from books 
     inner join languages on books.language_id = languages.id 
@@ -71,7 +71,7 @@ router.get("/getAllBookInfoByCountry/:id", (request, response)=>{
 
 router.get("/getAllBookInfoById/:id", (request, response)=>{
     db.query(`select books.id, books.title , books.description, books.release_year, books.cover, 
-    languages.name AS language, authors.first_name, authors.last_name,countries.id AS country_id, countries.name AS country_name, 
+    languages.name AS language, languages.id AS language_id, authors.first_name, authors.last_name,countries.id AS country_id, countries.name AS country_name, 
     countries.flag, users.id AS userId, users.username
     from books 
     inner join languages on books.language_id = languages.id 
@@ -88,6 +88,13 @@ router.post("/addBook", (request, response)=>{
     db.query("insert into books(title, description, release_year, language_id, author_id, user_id, country_id, cover) values(?, ? , ?, ?, ?, ?, ? , ?)", [request.body.title, request.body.description, request.body.release_year, request.body.language_id, request.body.author_id, request.body.user_id, request.body.country_id,request.body.cover], (err, results)=>{
         if(err) throw err;
         response.send("Book successfully added");
+    })
+})
+
+router.put("/editBook", (request, response)=>{
+    db.query("update books set title = ?, description = ?, release_year = ?, language_id = ?, author_id = ?, country_id = ?, cover = ? where id = ?", [request.body.title, request.body.description, request.body.release_year, request.body.language_id, request.body.author_id, request.body.country_id, request.body.cover, request.body.id], (err, results)=>{
+        if(err) throw err;
+        response.send("Book successfully updated");
     })
 })
 module.exports = router;
